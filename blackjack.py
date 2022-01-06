@@ -6,24 +6,29 @@ King = 10
 Queen = 10
 cards = [Ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King] 
 
+endGame = False
 dealerHand = []
-dealerCount = 0
 userHand = []
-userCount = 0
 
 def runGame(): #runs the game
   deal()
+  
   print("Your hand: ", userHand, "Count:", getUserCount())
   print("Dealers hand: ", dealerHand, "Count:", getDealerCount())
-  
+ 
+  while bust(getUserCount) == False:
+    if endGame == True:
+      break
+    print("Would you like to hit, stand or double?")
+    userCommands(input())
+  else:
+    print("bust")
+   
 def deal():
-  if len(dealerHand) == 0:
-    dealerHand.append(random.choice(cards))
-    dealerHand.append(random.choice(cards))
-    
-  if len(userHand) == 0:
-    userHand.append(random.choice(cards))
-    userHand.append(random.choice(cards))
+  dealerHand.append(random.choice(cards))
+  dealerHand.append(random.choice(cards)) 
+  userHand.append(random.choice(cards))
+  userHand.append(random.choice(cards))
     
 def getDealerCount():
   total = 0
@@ -36,36 +41,54 @@ def getUserCount():
   for x in userHand:
     total = total + x
   return total
-"""
-def userCommands: #takes in a command
+
+def userCommands(cmd): #takes in a command
+  if cmd == "hit": hit(userHand)     
+  if cmd == "stand": stand()
+  #if cmd == "double": doubleD()
+
+def hit(hand): #takes either userHand or dealerHand as an argument and adds draws a card
+  hand.append(random.choice(cards))
+  return print("Your hand: ", userHand, "Count:", getUserCount(),"\n", "Dealers hand: ", dealerHand, "Count:", getDealerCount())
   
-  #hit command 
+def stand(): #stand command ends the users hand
+  dealer()
+  return result() 
+  return endGame == True
   
-  #stand command 
-  
-  #double down command 
-  
-  #bust functionality
-  
-def hit:
-  #hit command draws another card
-  
-def stand:
-  #stand command ends the users hand
-  
-def doubleD:
-   #double down command doubles the user bet, can only be used on the first card and attomatically hits and stands for the user
+#def doubleD(): #double down command doubles the user bet, can only be used on the first card and attomatically hits and stands for the user
    
-def bust:
-  #bust occurs if either user or dealer hand goes over 21
+def dealer(): # takes getDealerCount as an argument
+  while getDealerCount() <= 16:
+    hit(dealerHand)
+    
+def bust(count): #checks for bust, takes in a function argument i.e getUserCount or getDealerCount
+  if count() > 21:
+    return True
+  if count() <= 21:
+    return False
+  
+def result():
+################################
+  #user wins
+  dealerBustsUserDoesnt = bust(getDealerCount()) == True and bust(getUserCount()) == False
+  userHasHighCountNoBust = bust(getUserCount()) == False and bust(getDealerCount()) == False and getUserCount() > getDealerCount()
+  userWin = dealerBustsUserDoesnt and userHasHighCountNoBust
+  if userWin == True:
+    return print("User Win")
+##################################
+  #dealer wins
+  elif getDealerCount() < getUserCount() and getUserCount() <= 21:
+    return print("User Won")
+##################################
+  #ties
+  else:
+    return print("Tie")
   
   
-def dealer: # takes in the dealers hand count
+  """
   
-  #dealer hits if the hand count is 16 or less
-  
-  #dealer stands if the hand count is 17 or more
-  
+
 def hasAce:
   #if either the user or dealer has an ace:
   
